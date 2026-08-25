@@ -1,4 +1,7 @@
+let dashboardInitialized = false;
 document.addEventListener('app-ready', async function() {
+    if (dashboardInitialized) return;
+    dashboardInitialized = true;
 
     const uid = window.currentUser.uid;
     const db = window.firebaseDb;
@@ -19,16 +22,39 @@ document.addEventListener('app-ready', async function() {
     }
     
     function safeSet(key, value) {
-        // Atualiza objeto local
-        if (key === 'pmba_voltas') cloudState.voltas = parseInt(value, 10);
-        else if (key === 'pmba_pending_simulado') cloudState.pending_simulado = (value === 'true' || value === true);
-        else if (key === 'pmba_theme') cloudState.theme = value;
-        else if (key.startsWith('pmba_block-')) cloudState.blocks[key.replace('pmba_', '')] = (value === 'true' || value === true);
-        else if (key.startsWith('pmba_note_')) cloudState.notes[key.replace('pmba_note_', '')] = value;
-        else if (key.startsWith('pmba_subj_')) cloudState.subjects[key.replace('pmba_subj_', '')] = value;
+        let updatePayload = {};
 
-        // Grava no Firestore imediatamente (o SDK do Firebase gerencia a fila e persistência offline perfeitamente)
-        stateRef.set(cloudState, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
+        if (key === 'pmba_voltas') {
+            cloudState.voltas = parseInt(value, 10);
+            updatePayload = { voltas: cloudState.voltas };
+        }
+        else if (key === 'pmba_pending_simulado') {
+            cloudState.pending_simulado = (value === 'true' || value === true);
+            updatePayload = { pending_simulado: cloudState.pending_simulado };
+        }
+        else if (key === 'pmba_theme') {
+            cloudState.theme = value;
+            updatePayload = { theme: value };
+        }
+        else if (key.startsWith('pmba_block-')) {
+            let bId = key.replace('pmba_', '');
+            let val = (value === 'true' || value === true);
+            cloudState.blocks[bId] = val;
+            updatePayload = { blocks: { [bId]: val } };
+        }
+        else if (key.startsWith('pmba_note_')) {
+            let nId = key.replace('pmba_note_', '');
+            cloudState.notes[nId] = value;
+            updatePayload = { notes: { [nId]: value } };
+        }
+        else if (key.startsWith('pmba_subj_')) {
+            let sId = key.replace('pmba_subj_', '');
+            cloudState.subjects[sId] = value;
+            updatePayload = { subjects: { [sId]: value } };
+        }
+
+        // Deep merge apenas do campo modificado, evitando reescrever estado obsoleto
+        stateRef.set(updatePayload, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
     }
     
     function safeRemove(key) {

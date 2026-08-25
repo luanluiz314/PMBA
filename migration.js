@@ -103,8 +103,11 @@ async function migrateLocalDataToFirestore() {
     }
 }
 
-// Inicia a migração logo que a autenticação estiver pronta, antes de carregar o app
+let appReadyDispatched = false;
 document.addEventListener('auth-success', async (e) => {
+    if (appReadyDispatched) return;
+    appReadyDispatched = true;
+
     // Aguarda a migração, se houver
     await migrateLocalDataToFirestore();
     
