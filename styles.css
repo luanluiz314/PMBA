@@ -197,85 +197,25 @@ body {
 }
 
 /* ============================================
-   HERO HEADER (Tactical Carousel)
+   APP HEADER (Static replacement for Carousel)
    ============================================ */
 
-.hero-header {
-    --text-primary: #ffffff;
-    --text-secondary: #aaaaaa;
-    --bg-main: #000000;
-    --border-color: #555555;
-    
+.app-header {
     position: relative;
     width: 100%;
-    min-height: 380px;
     border: 1px solid var(--border-color);
     padding: clamp(1rem, 4vw, 1.5rem);
-    overflow: hidden;
+    background: var(--bg-main);
 }
 
-.hero-slide {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: center 20%;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    z-index: 0;
-}
-.hero-slide.active {
-    opacity: 1;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
-    z-index: 1;
-    pointer-events: none;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
+.header-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
-    min-height: 330px;
-    pointer-events: none; /* Let clicks pass through to nav buttons */
-}
-.hero-content > * {
-    pointer-events: auto; /* Re-enable clicks for inner content */
+    gap: 2.5rem;
 }
 
-/* CAROUSEL NAV BUTTONS */
-.hero-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 3;
-    background: rgba(0,0,0,0.5);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    border-radius: 50%; /* Streetwear style circular buttons */
-    transition: all 0.2s;
-}
-.hero-nav-btn:hover {
-    background: var(--text-primary);
-    color: var(--bg-main);
-}
-.hero-nav-btn.prev { left: 1rem; }
-.hero-nav-btn.next { right: 1rem; }
-
-.hero-top {
+.header-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -283,13 +223,13 @@ body {
     gap: 1rem;
 }
 
-.hero-brand {
+.header-brand {
     color: var(--text-primary);
     font-size: 0.85rem;
     font-weight: 700;
 }
 
-.hero-nav {
+.header-nav {
     display: flex;
     gap: 1.5rem;
     align-items: center;
@@ -304,13 +244,13 @@ body {
     font-size: 1.1rem;
 }
 
-.hero-bottom {
+.header-bottom {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.hero-title-group {
+.header-title-group {
     display: flex;
     align-items: flex-end;
     gap: 1.5rem;
@@ -337,7 +277,7 @@ body {
     color: var(--bg-main);
 }
 
-.hero-title-group h1 {
+.header-title-group h1 {
     font-size: clamp(1.8rem, 6vw, 2.5rem);
     font-weight: 800;
     text-transform: uppercase;
@@ -346,34 +286,14 @@ body {
     line-height: 1;
 }
 
-/* CAROUSEL INDICATORS */
-.hero-indicators {
-    position: absolute;
-    bottom: -0.5rem;
-    right: 0;
-    display: flex;
-    gap: 6px;
-}
-.hero-indicators .dot {
-    width: 6px;
-    height: 6px;
-    background: var(--border-color);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-.hero-indicators .dot.active {
-    background: var(--text-primary);
-}
-
-.hero-line {
+.header-line {
     width: 100%;
     height: 1px;
     background: rgba(255, 255, 255, 0.2);
     position: relative;
-    z-index: 2;
+    margin-top: 1.5rem;
 }
-.hero-line::after {
+.header-line::after {
     content: '';
     position: absolute;
     left: 0; top: 0;
@@ -1022,7 +942,7 @@ select.fc-input option { background: var(--bg-main); color: var(--text-primary);
     .pomodoro-bar {
         padding: 0 1rem;
     }
-    .hero-title-group {
+    .header-title-group {
         flex-direction: column-reverse;
         align-items: flex-start;
         gap: 1.25rem;

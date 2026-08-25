@@ -261,52 +261,7 @@ document.addEventListener('app-ready', async function() {
                 simuladoAlert.style.display = 'none';
             });
 
-            // === 8. Carrossel ===
-            var slides = document.querySelectorAll('.hero-slide');
-            var dots = document.querySelectorAll('.hero-indicators .dot');
-            var prevBtn = document.getElementById('hero-prev');
-            var nextBtn = document.getElementById('hero-next');
-            var currentSlide = 0;
-            var slideInterval;
-
-            function goToSlide(n) {
-                slides[currentSlide].classList.remove('active');
-                dots[currentSlide].classList.remove('active');
-                currentSlide = (n + slides.length) % slides.length;
-                slides[currentSlide].classList.add('active');
-                dots[currentSlide].classList.add('active');
-            }
-
-            function nextSlide() { goToSlide(currentSlide + 1); }
-            function prevSlide() { goToSlide(currentSlide - 1); }
-
-            nextBtn.addEventListener('click', function() {
-                nextSlide();
-                resetInterval();
-            });
-            prevBtn.addEventListener('click', function() {
-                prevSlide();
-                resetInterval();
-            });
-
-            dots.forEach(function(dot) {
-                dot.addEventListener('click', function(e) {
-                    var idx = parseInt(e.target.getAttribute('data-index'));
-                    goToSlide(idx);
-                    resetInterval();
-                });
-            });
-
-            function startInterval() {
-                slideInterval = setInterval(nextSlide, 5000);
-            }
-            function resetInterval() {
-                clearInterval(slideInterval);
-                startInterval();
-            }
-            startInterval();
-
-            // === 9. Tema Light/Dark ===
+            // === 8. Tema Light/Dark ===
             themeBtn.addEventListener('click', function() {
                 var currentTheme = cloudState.theme === 'dark' ? 'light' : 'dark';
                 safeSet('pmba_theme', currentTheme);

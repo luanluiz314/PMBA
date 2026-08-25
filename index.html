@@ -35,42 +35,25 @@
 
     <div class="dashboard-container">
         
-        <header class="hero-header" id="hero-slider">
-            <div class="hero-slide active" style="background-image: url('assets/hero-bg.jpg')"></div>
-            <div class="hero-slide" style="background-image: url('assets/hero-bg-2.jpg')"></div>
-            <div class="hero-slide" style="background-image: url('assets/hero-bg-3.jpg')"></div>
-            <div class="hero-slide" style="background-image: url('assets/hero-bg-4.jpg')"></div>
-
-            <div class="hero-overlay"></div>
-            
-            <button class="hero-nav-btn prev" id="hero-prev">� �</button>
-            <button class="hero-nav-btn next" id="hero-next">� �</button>
-
-            <div class="hero-content">
-                <div class="hero-top">
-                    <div class="hero-brand brutal-label">PMBA�2026</div>
-                    <div class="hero-nav" style="align-items: center;">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-top">
+                    <div class="header-brand brutal-label">PMBA®2026</div>
+                    <div class="header-nav" style="align-items: center; display: flex; gap: 1.5rem;">
                         <button id="theme-btn" class="brutal-label" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; text-decoration:underline; text-underline-offset:4px;">MODO CLARO</button>
                         <button class="brutal-label" onclick="window.logout()" style="background:none; border:none; color:var(--accent-red); cursor:pointer; text-decoration:underline; text-underline-offset:4px;">SAIR</button>
                         <span class="brutal-label lap-counter">VOLTAS: <strong id="voltas-count">0</strong></span>
                     </div>
                 </div>
                 
-                <div class="hero-bottom">
-                    <div class="hero-title-group">
+                <div class="header-bottom">
+                    <div class="header-title-group">
                         <button id="reset-btn" class="btn-hero">CONCLUIR VOLTA</button>
                         <h1>CICLO DEFINITIVO</h1>
                     </div>
-                    
-                    <div class="hero-indicators" id="hero-indicators">
-                        <span class="dot active" data-index="0"></span>
-                        <span class="dot" data-index="1"></span>
-                        <span class="dot" data-index="2"></span>
-                        <span class="dot" data-index="3"></span>
-                    </div>
                 </div>
             </div>
-            <div class="hero-line"></div>
+            <div class="header-line"></div>
         </header>
 
         <!-- TABS NAV -->
