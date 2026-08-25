@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -24,12 +24,12 @@
             </div>
             <div class="pomo-right">
                 <button id="pomo-play-btn" class="pomo-btn">INICIAR</button>
-                <button id="pomo-reset-btn" class="pomo-btn">âŸ³</button>
-                <button id="pomo-min-btn" class="pomo-btn" title="Minimizar">â–¼</button>
+                <button id="pomo-reset-btn" class="pomo-btn">⟳</button>
+                <button id="pomo-min-btn" class="pomo-btn" title="Minimizar">▼</button>
             </div>
         </div>
         <div id="pomodoro-min-tab" class="pomodoro-min-tab">
-            â± <span id="pomo-min-time">50:00</span> â–¼
+            ⏱ <span id="pomo-min-time">50:00</span> ▼
         </div>
     </div>
 
@@ -43,12 +43,12 @@
 
             <div class="hero-overlay"></div>
             
-            <button class="hero-nav-btn prev" id="hero-prev">â ®</button>
-            <button class="hero-nav-btn next" id="hero-next">â ¯</button>
+            <button class="hero-nav-btn prev" id="hero-prev">� �</button>
+            <button class="hero-nav-btn next" id="hero-next">� �</button>
 
             <div class="hero-content">
                 <div class="hero-top">
-                    <div class="hero-brand brutal-label">PMBA®2026</div>
+                    <div class="hero-brand brutal-label">PMBA�2026</div>
                     <div class="hero-nav" style="align-items: center;">
                         <button id="theme-btn" class="brutal-label" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; text-decoration:underline; text-underline-offset:4px;">MODO CLARO</button>
                         <button class="brutal-label" onclick="window.logout()" style="background:none; border:none; color:var(--accent-red); cursor:pointer; text-decoration:underline; text-underline-offset:4px;">SAIR</button>
@@ -84,66 +84,66 @@
             </div>
         </div>
 
-        <!-- Alerta de Simulado (Oculto por padrÃ£o) -->
+        <!-- Alerta de Simulado (Oculto por padrão) -->
         <div id="simulado-alert" class="simulado-banner" style="display: none;">
             <div class="simulado-content">
                 <div>
-                    <h3>Parada ObrigatÃ³ria: Simulado</h3>
-                    <p>VocÃª completou 2 voltas no ciclo. FaÃ§a um <strong>Simulado Completo (80 questÃµes + RedaÃ§Ã£o)</strong>.</p>
+                    <h3>Parada Obrigatória: Simulado</h3>
+                    <p>Você completou 2 voltas no ciclo. Faça um <strong>Simulado Completo (80 questões + Redação)</strong>.</p>
                 </div>
             </div>
-            <button id="dismiss-simulado" class="btn-dismiss">Confirmar RealizaÃ§Ã£o</button>
+            <button id="dismiss-simulado" class="btn-dismiss">Confirmar Realização</button>
         </div>
 
-        <!-- MÃ©todo de Estudo -->
+        <!-- Método de Estudo -->
         <section class="daily-block-info">
             <div class="section-header">
-                <h2>MÃ‰TODO DE ESTUDO</h2>
-                <span class="brutal-label time-estimate">FLUXO CONTÃNUO</span>
+                <h2>MÉTODO DE ESTUDO</h2>
+                <span class="brutal-label time-estimate">FLUXO CONTÍNUO</span>
             </div>
             
             <div class="phases-grid method-grid">
                 <div class="phase-card">
                     <h3>1. RECUPERAR</h3>
-                    <p>Pegue o Ãºltimo assunto estudado.</p>
+                    <p>Pegue o último assunto estudado.</p>
                     <p>Sem consulta, escreva tudo que lembrar.</p>
-                    <p><strong>Objetivo:</strong> ativar/testar a memÃ³ria.</p>
+                    <p><strong>Objetivo:</strong> ativar/testar a memória.</p>
                 </div>
                 
                 <div class="phase-card">
                     <h3>2. ANKI</h3>
-                    <p>FaÃ§a as revisÃµes pendentes.</p>
-                    <p>MatÃ©rias misturadas; use tags p/ separar assunto.</p>
+                    <p>Faça as revisões pendentes.</p>
+                    <p>Matérias misturadas; use tags p/ separar assunto.</p>
                 </div>
 
                 <div class="phase-card">
                     <h3>3. ESTUDAR</h3>
-                    <p>Estude o conteÃºdo novo (aula, PDF, lei).</p>
-                    <p>Priorize compreensÃ£o.</p>
+                    <p>Estude o conteúdo novo (aula, PDF, lei).</p>
+                    <p>Priorize compreensão.</p>
                 </div>
 
                 <div class="phase-card">
                     <h3>4. EXPLICAR</h3>
                     <p>Feche o material.</p>
-                    <p>Explique em voz alta como se ensinasse alguÃ©m.</p>
+                    <p>Explique em voz alta como se ensinasse alguém.</p>
                 </div>
 
                 <div class="phase-card">
-                    <h3>5. QUESTÃ•ES</h3>
-                    <p>Resolva questÃµes e analise erros.</p>
+                    <h3>5. QUESTÕES</h3>
+                    <p>Resolva questões e analise erros.</p>
                     <p>Anote erro, aprendizado e bizus.</p>
-                    <p><strong>Acerto c/ dÃºvida:</strong> revisar.</p>
+                    <p><strong>Acerto c/ dúvida:</strong> revisar.</p>
                 </div>
 
                 <div class="phase-card">
                     <h3>6. REEXPLICAR</h3>
                     <p>Explique novamente sem consulta.</p>
-                    <p>Inclua as correÃ§Ãµes dos erros.</p>
+                    <p>Inclua as correções dos erros.</p>
                 </div>
 
                 <div class="phase-card">
                     <h3>7. ANKI</h3>
-                    <p>Crie cards sÃ³ do que precisa ser revisto:</p>
+                    <p>Crie cards só do que precisa ser revisto:</p>
                     <ul style="padding-left: 1rem; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.75rem;">
                         <li>Erros e esquecimentos</li>
                         <li>Conceitos essenciais e bizus</li>
@@ -152,14 +152,14 @@
 
                 <div class="phase-card">
                     <h3>8. MAPA</h3>
-                    <p>FaÃ§a um mapa/resumo rÃ¡pido Ã  mÃ£o.</p>
-                    <p>Registre sÃ³ a estrutura essencial.</p>
-                    <p>NÃ£o busque perfeiÃ§Ã£o.</p>
+                    <p>Faça um mapa/resumo rápido à mão.</p>
+                    <p>Registre só a estrutura essencial.</p>
+                    <p>Não busque perfeição.</p>
                 </div>
 
                 <div class="phase-card">
                     <h3>9. CORRIGIR</h3>
-                    <p>Volte Ã  1Âª anotaÃ§Ã£o (RecuperaÃ§Ã£o).</p>
+                    <p>Volte à 1ª anotação (Recuperação).</p>
                     <p>Compare com o que aprendeu hoje.</p>
                     <p>Corrija erros e complete lacunas.</p>
                 </div>
@@ -168,12 +168,12 @@
             <div class="method-footer">
                 <div class="method-summary">
                     <span class="brutal-label" style="color:var(--text-primary)">RESUMO</span>
-                    <p><strong>Mapa Ã  mÃ£o</strong> = rÃ¡pido, p/ o estudo do dia.</p>
-                    <p><strong>Resumo digital</strong> = arquivo organizado e acumulativo; atualize depois, nÃ£o durante a sessÃ£o.</p>
+                    <p><strong>Mapa à mão</strong> = rápido, p/ o estudo do dia.</p>
+                    <p><strong>Resumo digital</strong> = arquivo organizado e acumulativo; atualize depois, não durante a sessão.</p>
                 </div>
                 <div class="method-flow" style="margin-top: 1rem;">
                     <span class="brutal-label" style="color:var(--accent-red)">FLUXO</span>
-                    <p class="flow-path">RECUPERAR âž” ANKI âž” ESTUDAR âž” EXPLICAR âž” QUESTÃ•ES âž” REEXPLICAR âž” ANKI âž” MAPA âž” CORRIGIR</p>
+                    <p class="flow-path">RECUPERAR ➔ ANKI ➔ ESTUDAR ➔ EXPLICAR ➔ QUESTÕES ➔ REEXPLICAR ➔ ANKI ➔ MAPA ➔ CORRIGIR</p>
                 </div>
             </div>
         </section>
@@ -188,7 +188,7 @@
                 <div class="block-card" data-block="1">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-1"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>LÃ­ngua Portuguesa</h4></div>
+                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>Língua Portuguesa</h4></div>
                         <span class="number">01</span>
                         </div>
                     </div>
@@ -204,7 +204,7 @@
                 <div class="block-card" data-block="3">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-3"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>MatemÃ¡tica / RLM</h4></div>
+                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>Matemática / RLM</h4></div>
                         <span class="number">03</span>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
                 <div class="block-card" data-block="4">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-4"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Humanas</span><h4>HistÃ³ria (BR e BA)</h4></div>
+                        <div class="info"><span class="cat brutal-label">Humanas</span><h4>História (BR e BA)</h4></div>
                         <span class="number">04</span>
                         </div>
                     </div>
@@ -228,7 +228,7 @@
                 <div class="block-card" data-block="6">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-6"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Tecnologia</span><h4>InformÃ¡tica</h4></div>
+                        <div class="info"><span class="cat brutal-label">Tecnologia</span><h4>Informática</h4></div>
                         <span class="number">06</span>
                         </div>
                     </div>
@@ -236,7 +236,7 @@
                 <div class="block-card" data-block="7">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-7"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>LÃ­ngua Portuguesa</h4></div>
+                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>Língua Portuguesa</h4></div>
                         <span class="number">07</span>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                 <div class="block-card" data-block="9">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-9"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>MatemÃ¡tica / RLM</h4></div>
+                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>Matemática / RLM</h4></div>
                         <span class="number">09</span>
                         </div>
                     </div>
@@ -268,7 +268,7 @@
                 <div class="block-card" data-block="11">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-11"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">EspecÃ­fico</span><h4>Direito Penal Militar</h4></div>
+                        <div class="info"><span class="cat brutal-label">Específico</span><h4>Direito Penal Militar</h4></div>
                         <span class="number">11</span>
                         </div>
                     </div>
@@ -284,7 +284,7 @@
                 <div class="block-card" data-block="13">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-13"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>LÃ­ngua Portuguesa</h4></div>
+                        <div class="info"><span class="cat brutal-label">Linguagens</span><h4>Língua Portuguesa</h4></div>
                         <span class="number">13</span>
                         </div>
                     </div>
@@ -300,7 +300,7 @@
                 <div class="block-card" data-block="15">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-15"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>MatemÃ¡tica / RLM</h4></div>
+                        <div class="info"><span class="cat brutal-label">Exatas</span><h4>Matemática / RLM</h4></div>
                         <span class="number">15</span>
                         </div>
                     </div>
@@ -308,7 +308,7 @@
                 <div class="block-card" data-block="16">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-16"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Humanas</span><h4>HistÃ³ria (BR e BA)</h4></div>
+                        <div class="info"><span class="cat brutal-label">Humanas</span><h4>História (BR e BA)</h4></div>
                         <span class="number">16</span>
                         </div>
                     </div>
@@ -324,7 +324,7 @@
                 <div class="block-card" data-block="18">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-18"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">Tecnologia</span><h4>InformÃ¡tica</h4></div>
+                        <div class="info"><span class="cat brutal-label">Tecnologia</span><h4>Informática</h4></div>
                         <span class="number">18</span>
                         </div>
                     </div>
@@ -356,7 +356,7 @@
                 <div class="block-card" data-block="22">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-22"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">EspecÃ­fico</span><h4>Direito Penal Militar</h4></div>
+                        <div class="info"><span class="cat brutal-label">Específico</span><h4>Direito Penal Militar</h4></div>
                         <span class="number">22</span>
                         </div>
                     </div>
@@ -380,33 +380,33 @@
                 <div class="block-card" data-block="25">
                     <div class="block-row">
                         <label class="custom-checkbox"><input type="checkbox" id="block-25"><span class="checkmark"></span></label>
-                        <div class="info"><span class="cat brutal-label">PrÃ¡tica (1h)</span><h4>RedaÃ§Ã£o</h4></div>
+                        <div class="info"><span class="cat brutal-label">Prática (1h)</span><h4>Redação</h4></div>
                         <span class="number">25</span>
                         </div>
                     </div>
             </div>
         </section>
 
-        <!-- DiÃ¡rio de Disciplinas -->
+        <!-- Diário de Disciplinas -->
         <section class="glass-panel subjects-section">
             <div class="section-header">
                 <h2>STATUS DAS DISCIPLINAS</h2>
                 <span class="badge brutal-label">CONTROLE GLOBAL</span>
             </div>
             <div class="subjects-grid" id="subjects-grid">
-                <!-- Gerado via JS baseado nas matÃ©rias do ciclo -->
+                <!-- Gerado via JS baseado nas matérias do ciclo -->
             </div>
         </section>
 
         <!-- FLASHCARDS SECTION -->
         <section class="glass-panel flashcard-section" style="margin-top: 3rem;">
             <div class="section-header">
-                <h2>GERENCIADOR DE REVISÃ•ES (SRS)</h2>
-                <span class="badge brutal-label">REPETIÃ‡ÃƒO ESPAÃ‡ADA</span>
+                <h2>GERENCIADOR DE REVISÕES (SRS)</h2>
+                <span class="badge brutal-label">REPETIÇÃO ESPAÇADA</span>
             </div>
             
             <div class="fc-toolbar" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                <button id="btn-fc-add" class="btn-hero" style="margin-bottom:0;">+ NOVO CARTÃƒO</button>
+                <button id="btn-fc-add" class="btn-hero" style="margin-bottom:0;">+ NOVO CARTÃO</button>
             </div>
 
             <div class="decks-grid" id="decks-grid">
@@ -415,16 +415,16 @@
         </section>
         
         <div class="footer-note">
-            <p><strong>Reta Final (Ãšltimos 21 dias):</strong> 80% QuestÃµes e 20% Lei Seca. Sono inegociÃ¡vel (7h-9h).</p>
+            <p><strong>Reta Final (Últimos 21 dias):</strong> 80% Questões e 20% Lei Seca. Sono inegociável (7h-9h).</p>
         </div>
 
         <!-- DADOS & BACKUP SECTION -->
         <div class="backup-section brutal-panel">
             <h3 class="brutal-label">DADOS & BACKUP</h3>
-            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">Seus dados ficam salvos apenas neste navegador. FaÃ§a backups regulares.</p>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">Seus dados ficam salvos apenas neste navegador. Faça backups regulares.</p>
             <div class="backup-actions">
-                <button id="btn-export-data" class="btn-hero">ðŸ“¥ EXPORTAR DADOS</button>
-                <button id="btn-import-data" class="btn-hero">ðŸ“¤ IMPORTAR DADOS</button>
+                <button id="btn-export-data" class="btn-hero">📥 EXPORTAR DADOS</button>
+                <button id="btn-import-data" class="btn-hero">📤 IMPORTAR DADOS</button>
                 <input type="file" id="input-import-data" accept=".json" style="display: none;">
             </div>
         </div>
@@ -432,12 +432,12 @@
     </div>
 
     <!-- MODALS SRS -->
-    <!-- Overlay de Adicionar CartÃ£o -->
+    <!-- Overlay de Adicionar Cartão -->
     <div id="modal-fc-add" class="fc-modal-overlay" style="display: none;">
         <div class="fc-modal brutal-panel">
             <div class="fc-modal-header">
-                <h3>CRIAR NOVO CARTÃƒO</h3>
-                <button id="btn-fc-close-add" class="btn-close-modal">âœ•</button>
+                <h3>CRIAR NOVO CARTÃO</h3>
+                <button id="btn-fc-close-add" class="btn-close-modal">✕</button>
             </div>
             <div class="fc-modal-body">
                 <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">DECK:</label>
@@ -448,7 +448,7 @@
                 <textarea id="fc-add-back" class="fc-input" rows="4"></textarea>
                 <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">TAGS (Opcional):</label>
                 <input type="text" id="fc-add-tags" class="fc-input" placeholder="ex: art5, penal, prazos">
-                <button id="btn-fc-save" class="btn-hero" style="margin-top: 1.5rem; width: 100%;">SALVAR CARTÃƒO</button>
+                <button id="btn-fc-save" class="btn-hero" style="margin-top: 1.5rem; width: 100%;">SALVAR CARTÃO</button>
             </div>
         </div>
     </div>
@@ -480,13 +480,13 @@
 
         <div class="fc-review-actions">
             <div id="rev-show-container" style="width:100%; display:flex; justify-content:center;">
-                <button id="btn-rev-show" class="btn-hero btn-huge">MOSTRAR RESPOSTA (ESPAÃ‡O)</button>
+                <button id="btn-rev-show" class="btn-hero btn-huge">MOSTRAR RESPOSTA (ESPAÇO)</button>
             </div>
             <div id="rev-rate-container" style="display: none;" class="fc-rate-buttons">
                 <button class="btn-hero btn-rate" data-rating="1">ERREI (1)</button>
-                <button class="btn-hero btn-rate" data-rating="2">DIFÃCIL (2)</button>
+                <button class="btn-hero btn-rate" data-rating="2">DIFÍCIL (2)</button>
                 <button class="btn-hero btn-rate" data-rating="3">BOM (3)</button>
-                <button class="btn-hero btn-rate" data-rating="4">FÃCIL (4)</button>
+                <button class="btn-hero btn-rate" data-rating="4">FÁCIL (4)</button>
             </div>
         </div>
     </div>

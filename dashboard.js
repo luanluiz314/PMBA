@@ -1,4 +1,4 @@
-document.addEventListener('app-ready', async function() {
+﻿document.addEventListener('app-ready', async function() {
 
     const uid = window.currentUser.uid;
     const db = window.firebaseDb;
@@ -29,7 +29,7 @@ document.addEventListener('app-ready', async function() {
         else if (key.startsWith('pmba_note_')) cloudState.notes[key.replace('pmba_note_', '')] = value;
         else if (key.startsWith('pmba_subj_')) cloudState.subjects[key.replace('pmba_subj_', '')] = value;
 
-        // Persiste na nuvem com debounce para não floodar
+        // Persiste na nuvem com debounce para n�o floodar
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
             stateRef.set(cloudState, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
@@ -39,7 +39,7 @@ document.addEventListener('app-ready', async function() {
         safeSet(key, false); // No contexto atual, remove = false/empty
     }
 
-            // === 2. ReferÃªncias DOM ===
+            // === 2. Referências DOM ===
             var checkboxes = document.querySelectorAll('.custom-checkbox input');
             var resetBtn = document.getElementById('reset-btn');
             var voltasCountEl = document.getElementById('voltas-count');
@@ -84,7 +84,7 @@ document.addEventListener('app-ready', async function() {
                 });
             });
 
-            // AnotaÃ§Ãµes
+            // Anotações
             noteTextareas.forEach(function(ta) {
                 var blockNum = ta.getAttribute('data-block');
                 var savedNote = safeGet('pmba_note_' + blockNum) || '';
@@ -110,7 +110,7 @@ document.addEventListener('app-ready', async function() {
                 });
             });
 
-            // Toggle de anotaÃ§Ã£o
+            // Toggle de anotação
             noteBtns.forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -136,7 +136,7 @@ document.addEventListener('app-ready', async function() {
                 progressFillEl.style.width = percent + '%';
             }
 
-            // === 5. Indicador do prÃ³ximo bloco ===
+            // === 5. Indicador do próximo bloco ===
             function updateNextBlock() {
                 // Limpar indicadores anteriores
                 document.querySelectorAll('.block-card.next-block').forEach(function(el) {
@@ -146,7 +146,7 @@ document.addEventListener('app-ready', async function() {
                     el.parentNode.removeChild(el);
                 });
 
-                // Encontrar o primeiro bloco nÃ£o marcado
+                // Encontrar o primeiro bloco não marcado
                 for (var i = 0; i < checkboxes.length; i++) {
                     if (!checkboxes[i].checked) {
                         var card = checkboxes[i].closest('.block-card');
@@ -154,7 +154,7 @@ document.addEventListener('app-ready', async function() {
 
                         var badge = document.createElement('span');
                         badge.className = 'next-badge brutal-label';
-                        badge.textContent = 'PRÃ“XIMO';
+                        badge.textContent = 'PRÓXIMO';
                         card.appendChild(badge);
                         break;
                     }
@@ -163,7 +163,7 @@ document.addEventListener('app-ready', async function() {
 
             // === 6. Concluir Volta ===
             resetBtn.addEventListener('click', function() {
-                if (confirm('VocÃª terminou todos os 25 blocos?\n\nIsso irÃ¡ limpar as marcaÃ§Ãµes e registrar +1 volta completa.\nAs anotaÃ§Ãµes serÃ£o preservadas.')) {
+                if (confirm('Você terminou todos os 25 blocos?\n\nIsso irá limpar as marcações e registrar +1 volta completa.\nAs anotações serão preservadas.')) {
                     checkboxes.forEach(function(chk) {
                         chk.checked = false;
                         chk.closest('.block-card').classList.remove('completed');
@@ -359,11 +359,11 @@ document.addEventListener('app-ready', async function() {
 
             updatePomoDisplay();
 
-            // === 11. InicializaÃ§Ã£o ===
+            // === 11. Inicialização ===
             updateProgress();
             updateNextBlock();
 
-            // === 12. DiÃ¡rio de Disciplinas (Global Subject Notes) ===
+            // === 12. Diário de Disciplinas (Global Subject Notes) ===
             var subjectsGrid = document.getElementById('subjects-grid');
             if (subjectsGrid) {
                 var uniqueSubjects = [];

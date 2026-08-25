@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', async () => {
+// Inicializa a UI do Flashcard APÓS o login e a nuvem estarem prontos
+document.addEventListener('app-ready', async () => {
     
     // UI Elements
     const elDecksGrid = document.getElementById('decks-grid');
