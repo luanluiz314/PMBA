@@ -408,9 +408,17 @@ document.addEventListener('app-ready', async function() {
                 });
             }
 
-            // === 13. TABS NAV ===
+            // === 13. TABS NAV (FLOATING) ===
             var tabBtns = document.querySelectorAll('.tab-btn');
             var tabContents = document.querySelectorAll('.tab-content');
+            var floatingNav = document.getElementById('floating-nav');
+            var floatingToggle = document.getElementById('floating-toggle');
+
+            if (floatingToggle) {
+                floatingToggle.addEventListener('click', function() {
+                    floatingNav.classList.toggle('expanded');
+                });
+            }
 
             tabBtns.forEach(function(btn) {
                 btn.addEventListener('click', function() {
@@ -422,7 +430,21 @@ document.addEventListener('app-ready', async function() {
                     btn.classList.add('active');
                     var targetId = btn.getAttribute('data-tab');
                     document.getElementById(targetId).style.display = 'block';
+                    
+                    // Fecha o menu flutuante se estiver aberto
+                    if (floatingNav) {
+                        floatingNav.classList.remove('expanded');
+                    }
                 });
+            });
+
+            // Fecha o menu ao clicar fora dele
+            document.addEventListener('click', function(e) {
+                if (floatingNav && floatingNav.classList.contains('expanded')) {
+                    if (!floatingNav.contains(e.target)) {
+                        floatingNav.classList.remove('expanded');
+                    }
+                }
             });
 
         });
