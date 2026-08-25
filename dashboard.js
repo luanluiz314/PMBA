@@ -1,12 +1,11 @@
-﻿document.addEventListener('app-ready', async function() {
+document.addEventListener('app-ready', async function() {
 
     const uid = window.currentUser.uid;
     const db = window.firebaseDb;
     const stateRef = db.collection('users').doc(uid).collection('dashboard').doc('state');
     
-    // Busca estado inicial da nuvem
-    let docSnap = await stateRef.get();
-    let cloudState = docSnap.exists ? docSnap.data() : { voltas: 0, pending_simulado: false, theme: 'dark', blocks: {}, notes: {}, subjects: {} };
+    // Estado na memória
+    let cloudState = { voltas: 0, pending_simulado: false, theme: 'dark', blocks: {}, notes: {}, subjects: {} };
 
     // === 1. Facade Segura (Firebase) ===
     function safeGet(key) {
@@ -19,111 +18,153 @@
         return null;
     }
     
-    let saveTimeout;
     function safeSet(key, value) {
         // Atualiza objeto local
         if (key === 'pmba_voltas') cloudState.voltas = parseInt(value, 10);
         else if (key === 'pmba_pending_simulado') cloudState.pending_simulado = (value === 'true' || value === true);
         else if (key === 'pmba_theme') cloudState.theme = value;
-        else if (key.startsWith('pmba_block-')) cloudState.blocks[key.replace('pmba_', '')] = value;
+        else if (key.startsWith('pmba_block-')) cloudState.blocks[key.replace('pmba_', '')] = (value === 'true' || value === true);
         else if (key.startsWith('pmba_note_')) cloudState.notes[key.replace('pmba_note_', '')] = value;
         else if (key.startsWith('pmba_subj_')) cloudState.subjects[key.replace('pmba_subj_', '')] = value;
 
-        // Persiste na nuvem com debounce para n�o floodar
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-            stateRef.set(cloudState, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
-        }, 1000);
+        // Grava no Firestore imediatamente (o SDK do Firebase gerencia a fila e persistência offline perfeitamente)
+        stateRef.set(cloudState, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
     }
+    
     function safeRemove(key) {
-        safeSet(key, false); // No contexto atual, remove = false/empty
+        safeSet(key, false);
     }
 
-            // === 2. Referências DOM ===
-            var checkboxes = document.querySelectorAll('.custom-checkbox input');
-            var resetBtn = document.getElementById('reset-btn');
-            var voltasCountEl = document.getElementById('voltas-count');
-            var simuladoAlert = document.getElementById('simulado-alert');
-            var dismissSimulado = document.getElementById('dismiss-simulado');
-            var progressCountEl = document.getElementById('progress-count');
-            var progressFillEl = document.getElementById('progress-fill');
-            var noteBtns = document.querySelectorAll('.note-btn');
-            var noteTextareas = document.querySelectorAll('.note-area textarea');
+    // === 2. Referências DOM ===
+    var checkboxes = document.querySelectorAll('.custom-checkbox input');
+    var resetBtn = document.getElementById('reset-btn');
+    var voltasCountEl = document.getElementById('voltas-count');
+    var simuladoAlert = document.getElementById('simulado-alert');
+    var dismissSimulado = document.getElementById('dismiss-simulado');
+    var progressCountEl = document.getElementById('progress-count');
+    var progressFillEl = document.getElementById('progress-fill');
+    var noteBtns = document.querySelectorAll('.note-btn');
+    var noteTextareas = document.querySelectorAll('.note-area textarea');
+    var themeBtn = document.getElementById('theme-btn');
 
-            // === 3. Carregar estado salvo ===
+    // === Função de Sincronização da UI ===
+    function syncDOM() {
+        // Voltas
+        var voltas = parseInt(cloudState.voltas || '0', 10);
+        if (isNaN(voltas)) voltas = 0;
+        voltasCountEl.textContent = voltas;
 
-            // Voltas
-            var voltas = parseInt(safeGet('pmba_voltas') || '0', 10);
-            if (isNaN(voltas)) voltas = 0;
-            voltasCountEl.textContent = voltas;
+        // Simulado pendente
+        if (cloudState.pending_simulado) {
+            simuladoAlert.style.display = 'flex';
+        } else {
+            simuladoAlert.style.display = 'none';
+        }
 
-            // Simulado pendente
-            var pendingSimulado = safeGet('pmba_pending_simulado') === 'true';
-            if (pendingSimulado) {
-                simuladoAlert.style.display = 'flex';
+        // Checkboxes
+        checkboxes.forEach(function(chk) {
+            var isChecked = !!cloudState.blocks[chk.id.replace('pmba_', '')];
+            chk.checked = isChecked;
+            if (isChecked) {
+                chk.closest('.block-card').classList.add('completed');
+            } else {
+                chk.closest('.block-card').classList.remove('completed');
+            }
+        });
+
+        // Notas
+        noteTextareas.forEach(function(ta) {
+            var blockNum = ta.getAttribute('data-block');
+            var savedNote = cloudState.notes[blockNum] || '';
+            
+            // Só atualiza o texto se o usuário não estiver digitando nele agora
+            if (document.activeElement !== ta) {
+                ta.value = savedNote;
             }
 
-            // Checkboxes
-            checkboxes.forEach(function(chk) {
-                var isChecked = safeGet('pmba_' + chk.id) === 'true';
-                chk.checked = isChecked;
-                if (isChecked) {
-                    chk.closest('.block-card').classList.add('completed');
+            var btn = document.querySelector('.note-btn[data-block="' + blockNum + '"]');
+            if (btn) {
+                if (savedNote.trim().length > 0) {
+                    btn.classList.add('has-note');
+                } else {
+                    btn.classList.remove('has-note');
                 }
+            }
+        });
 
-                chk.addEventListener('change', function(e) {
-                    safeSet('pmba_' + e.target.id, e.target.checked);
-                    var card = e.target.closest('.block-card');
-                    if (e.target.checked) {
-                        card.classList.add('completed');
-                    } else {
-                        card.classList.remove('completed');
-                    }
-                    updateProgress();
-                    updateNextBlock();
-                });
-            });
+        // Notas de Disciplinas (Subjects)
+        var subjectTextareas = document.querySelectorAll('.subject-card textarea');
+        subjectTextareas.forEach(function(ta) {
+            var subj = ta.getAttribute('data-subject');
+            var savedSubjNote = cloudState.subjects[subj] || '';
+            if (document.activeElement !== ta) {
+                ta.value = savedSubjNote;
+            }
+        });
 
-            // Anotações
-            noteTextareas.forEach(function(ta) {
-                var blockNum = ta.getAttribute('data-block');
-                var savedNote = safeGet('pmba_note_' + blockNum) || '';
-                ta.value = savedNote;
+        // Tema
+        var currentTheme = cloudState.theme || 'dark';
+        if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeBtn.textContent = 'MODO ESCURO';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeBtn.textContent = 'MODO CLARO';
+        }
 
-                // Indicador visual se existe nota
-                if (savedNote.trim()) {
-                    var btn = document.querySelector('.note-btn[data-block="' + blockNum + '"]');
-                    if (btn) btn.classList.add('has-note');
+        // Progresso
+        updateProgress();
+        updateNextBlock();
+    }
+
+    // Ouve as mudanças na nuvem EM TEMPO REAL
+    stateRef.onSnapshot((doc) => {
+        if (doc.exists) {
+            cloudState = doc.data();
+            // Garante que a estrutura exista
+            cloudState.blocks = cloudState.blocks || {};
+            cloudState.notes = cloudState.notes || {};
+            cloudState.subjects = cloudState.subjects || {};
+            syncDOM();
+        }
+    });
+
+    // === 3. Event Listeners ===
+
+    checkboxes.forEach(function(chk) {
+        chk.addEventListener('change', function(e) {
+            safeSet('pmba_' + e.target.id, e.target.checked);
+        });
+    });
+
+    noteTextareas.forEach(function(ta) {
+        var blockNum = ta.getAttribute('data-block');
+        ta.addEventListener('input', function() {
+            safeSet('pmba_note_' + blockNum, ta.value);
+            var btn = document.querySelector('.note-btn[data-block="' + blockNum + '"]');
+            if (btn) {
+                if (ta.value.trim().length > 0) {
+                    btn.classList.add('has-note');
+                } else {
+                    btn.classList.remove('has-note');
                 }
+            }
+        });
+    });
 
-                // Salvar automaticamente ao digitar
-                ta.addEventListener('input', function() {
-                    safeSet('pmba_note_' + blockNum, ta.value);
-                    var btn = document.querySelector('.note-btn[data-block="' + blockNum + '"]');
-                    if (btn) {
-                        if (ta.value.trim().length > 0) {
-                            btn.classList.add('has-note');
-                        } else {
-                            btn.classList.remove('has-note');
-                        }
-                    }
-                });
-            });
+    noteBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var card = btn.closest('.block-card');
+            var wasOpen = card.classList.contains('note-open');
+            card.classList.toggle('note-open');
 
-            // Toggle de anotação
-            noteBtns.forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var card = btn.closest('.block-card');
-                    var wasOpen = card.classList.contains('note-open');
-                    card.classList.toggle('note-open');
-
-                    if (!wasOpen) {
-                        var ta = card.querySelector('.note-area textarea');
-                        if (ta) setTimeout(function() { ta.focus(); }, 120);
-                    }
-                });
-            });
+            if (!wasOpen) {
+                var ta = card.querySelector('.note-area textarea');
+                if (ta) setTimeout(function() { ta.focus(); }, 120);
+            }
+        });
+    });
 
             // === 4. Progresso da volta ===
             function updateProgress() {
@@ -240,24 +281,9 @@
             startInterval();
 
             // === 9. Tema Light/Dark ===
-            var themeBtn = document.getElementById('theme-btn');
-            var currentTheme = safeGet('pmba_theme') || 'dark';
-            
-            function applyTheme(theme) {
-                if (theme === 'light') {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    themeBtn.textContent = 'MODO ESCURO';
-                } else {
-                    document.documentElement.removeAttribute('data-theme');
-                    themeBtn.textContent = 'MODO CLARO';
-                }
-            }
-            applyTheme(currentTheme);
-            
             themeBtn.addEventListener('click', function() {
-                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                var currentTheme = cloudState.theme === 'dark' ? 'light' : 'dark';
                 safeSet('pmba_theme', currentTheme);
-                applyTheme(currentTheme);
             });
 
             // === 10. Pomodoro HUD ===
@@ -374,6 +400,8 @@
                     }
                 });
 
+                subjectsGrid.innerHTML = ''; 
+                
                 uniqueSubjects.forEach(function(subj) {
                     var subjCard = document.createElement('div');
                     subjCard.className = 'subject-card';
@@ -386,11 +414,11 @@
                     header.appendChild(title);
                     
                     var ta = document.createElement('textarea');
-                    var storageKey = 'pmba_subj_' + subj;
-                    ta.value = safeGet(storageKey) || '';
+                    ta.setAttribute('data-subject', subj);
+                    ta.value = cloudState.subjects[subj] || '';
                     
                     ta.addEventListener('input', function() {
-                        safeSet(storageKey, ta.value);
+                        safeSet('pmba_subj_' + subj, ta.value);
                     });
                     
                     subjCard.appendChild(header);
@@ -398,5 +426,4 @@
                     subjectsGrid.appendChild(subjCard);
                 });
             }
-
         });
