@@ -51,7 +51,8 @@ document.addEventListener('app-ready', async () => {
         });
 
         for (const subj of uniqueSubjects) {
-            let deckId = 'deck_' + subj.toLowerCase().replace(/\s+/g, '_');
+            // Remove barras para não quebrar o caminho do Firestore (users/uid/decks/ID)
+            let deckId = 'deck_' + subj.toLowerCase().replace(/[\/\\]/g, '-').replace(/\s+/g, '_');
             let existing = await window.srsDB.getDeck(deckId);
             if (!existing) {
                 await window.srsDB.putDeck({

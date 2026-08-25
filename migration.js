@@ -53,7 +53,14 @@ async function migrateLocalDataToFirestore() {
                             const batch = db.batch();
                             let count = 0;
                             for (const item of items) {
-                                const docRef = userRef.collection(collectionName).doc(item.id.toString());
+                                // Evita que barras no ID quebrem o Firestore (ex: "deck_matemática_/_rlm")
+                                const safeId = item.id.toString().replace(/[\/\\]/g, '-');
+                                item.id = safeId;
+                                if (item.deckId) {
+                                    item.deckId = item.deckId.toString().replace(/[\/\\]/g, '-');
+                                }
+                                
+                                const docRef = userRef.collection(collectionName).doc(safeId);
                                 batch.set(docRef, item);
                                 count++;
                                 if (count === 490) { // Limite do batch do Firestore é 500
