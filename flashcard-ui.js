@@ -39,7 +39,7 @@ document.addEventListener('app-ready', async () => {
         await renderDecks();
     } catch (e) {
         console.error("Failed to initialize SRS DB:", e);
-        elDecksGrid.innerHTML = `<p style="color:red; padding:1rem;">Erro ao inicializar banco de dados do Anki. Verifique o console.</p>`;
+        elDecksGrid.innerHTML = `<p style="color:red; padding:1rem;">Erro Anki: ${e.message}</p>`;
     }
 
     // --- Core Logic ---
