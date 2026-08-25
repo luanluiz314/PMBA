@@ -1,0 +1,16 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temp
+*.tmp
+*.log
+
+# Arquivos Legados Isolados (Opcional: descomente para ignorar completamente)
+# _legacy/
