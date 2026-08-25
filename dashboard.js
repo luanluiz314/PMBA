@@ -452,4 +452,22 @@ document.addEventListener('app-ready', async function() {
                     subjectsGrid.appendChild(subjCard);
                 });
             }
+
+            // === 13. TABS NAV ===
+            var tabBtns = document.querySelectorAll('.tab-btn');
+            var tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // Remove active de todos
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.style.display = 'none');
+                    
+                    // Adiciona active no clicado
+                    btn.classList.add('active');
+                    var targetId = btn.getAttribute('data-tab');
+                    document.getElementById(targetId).style.display = 'block';
+                });
+            });
+
         });

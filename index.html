@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -73,6 +73,13 @@
             <div class="hero-line"></div>
         </header>
 
+        <!-- TABS NAV -->
+        <div class="tabs-nav brutal-label">
+            <button class="tab-btn active" data-tab="tab-dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="tab-flashcards">Flashcards</button>
+        </div>
+
+        <div id="tab-dashboard" class="tab-content" style="display: block;">
         <!-- Barra de Progresso da Volta -->
         <div class="progress-section">
             <div class="progress-label brutal-label">
@@ -397,9 +404,11 @@
                 <!-- Gerado via JS baseado nas matérias do ciclo -->
             </div>
         </section>
+        </div> <!-- FECHA TAB DASHBOARD -->
 
+        <div id="tab-flashcards" class="tab-content" style="display: none;">
         <!-- FLASHCARDS SECTION -->
-        <section class="glass-panel flashcard-section" style="margin-top: 3rem;">
+        <section class="glass-panel flashcard-section" style="margin-top: 0;">
             <div class="section-header">
                 <h2>GERENCIADOR DE REVISÕES (SRS)</h2>
                 <span class="badge brutal-label">REPETIÇÃO ESPAÇADA</span>
@@ -452,8 +461,11 @@
             </div>
         </div>
     </div>
+    
+    </div> <!-- FECHA TAB FLASHCARDS -->
+    </div> <!-- END dashboard-container -->
 
-    <!-- REVIEW SESSION OVERLAY -->
+    <!-- REVIEW SESSION OVERLAY (GLOBAL, FORA DAS TABS) -->
     <div id="fc-review-overlay" class="fc-review-overlay" style="display: none;">
         <div class="fc-review-header">
             <div class="fc-review-stats brutal-label" style="display:flex; gap: 2rem;">
