@@ -1,18 +1,43 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('app-ready', async function() {
 
-            // === 1. localStorage seguro ===
-            function safeGet(key) {
-                try { return localStorage.getItem(key); }
-                catch(e) { console.warn('localStorage indisponÃ­vel para leitura:', e); return null; }
-            }
-            function safeSet(key, value) {
-                try { localStorage.setItem(key, String(value)); }
-                catch(e) { console.warn('localStorage indisponÃ­vel para gravaÃ§Ã£o:', e); }
-            }
-            function safeRemove(key) {
-                try { localStorage.removeItem(key); }
-                catch(e) { /* silencioso */ }
-            }
+    const uid = window.currentUser.uid;
+    const db = window.firebaseDb;
+    const stateRef = db.collection('users').doc(uid).collection('dashboard').doc('state');
+    
+    // Busca estado inicial da nuvem
+    let docSnap = await stateRef.get();
+    let cloudState = docSnap.exists ? docSnap.data() : { voltas: 0, pending_simulado: false, theme: 'dark', blocks: {}, notes: {}, subjects: {} };
+
+    // === 1. Facade Segura (Firebase) ===
+    function safeGet(key) {
+        if (key === 'pmba_voltas') return cloudState.voltas;
+        if (key === 'pmba_pending_simulado') return cloudState.pending_simulado;
+        if (key === 'pmba_theme') return cloudState.theme;
+        if (key.startsWith('pmba_block-')) return cloudState.blocks[key.replace('pmba_', '')];
+        if (key.startsWith('pmba_note_')) return cloudState.notes[key.replace('pmba_note_', '')];
+        if (key.startsWith('pmba_subj_')) return cloudState.subjects[key.replace('pmba_subj_', '')];
+        return null;
+    }
+    
+    let saveTimeout;
+    function safeSet(key, value) {
+        // Atualiza objeto local
+        if (key === 'pmba_voltas') cloudState.voltas = parseInt(value, 10);
+        else if (key === 'pmba_pending_simulado') cloudState.pending_simulado = (value === 'true' || value === true);
+        else if (key === 'pmba_theme') cloudState.theme = value;
+        else if (key.startsWith('pmba_block-')) cloudState.blocks[key.replace('pmba_', '')] = value;
+        else if (key.startsWith('pmba_note_')) cloudState.notes[key.replace('pmba_note_', '')] = value;
+        else if (key.startsWith('pmba_subj_')) cloudState.subjects[key.replace('pmba_subj_', '')] = value;
+
+        // Persiste na nuvem com debounce para não floodar
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            stateRef.set(cloudState, { merge: true }).catch(e => console.error("Erro ao salvar no Firestore", e));
+        }, 1000);
+    }
+    function safeRemove(key) {
+        safeSet(key, false); // No contexto atual, remove = false/empty
+    }
 
             // === 2. ReferÃªncias DOM ===
             var checkboxes = document.querySelectorAll('.custom-checkbox input');

@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regra Global: Acessos aos documentos em /users/{uid}/...
+    match /users/{userId}/{document=**} {
+      
+      // Permite leitura e escrita APENAS se:
+      // 1. O usuário estiver logado (request.auth != null)
+      // 2. O UID do usuário logado for igual ao userId do documento que ele está tentando acessar
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+    }
+    
+    // Bloqueia acesso a qualquer outra coleção na raiz (Segurança Padrão)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PMBA Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Bibliotecas Firebase (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 10vh auto;
+            text-align: center;
+        }
+        .login-box {
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .login-input {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            font-family: var(--font-family);
+            outline: none;
+            width: 100%;
+        }
+        .login-input:focus { border-color: var(--text-primary); }
+        .btn-google {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="brutal-label" style="font-size: 1.5rem; margin-bottom: 2rem;">PMBA®2026</h1>
+        
+        <div class="login-box brutal-panel">
+            <h2 class="brutal-label">Acesso Restrito</h2>
+            
+            <button class="btn-hero btn-google" onclick="window.loginGoogle()">ENTRAR COM GOOGLE</button>
+            
+            <div style="color: var(--text-secondary); margin: 1rem 0;" class="brutal-label">OU E-MAIL</div>
+            
+            <input type="email" id="email" class="login-input" placeholder="SEU E-MAIL">
+            <input type="password" id="password" class="login-input" placeholder="SUA SENHA">
+            
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn-hero" style="flex: 1;" onclick="window.loginEmail(document.getElementById('email').value, document.getElementById('password').value)">ENTRAR</button>
+                <button class="btn-hero" style="flex: 1;" onclick="window.registerEmail(document.getElementById('email').value, document.getElementById('password').value)">CRIAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts da aplicação -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
