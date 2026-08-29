@@ -461,6 +461,27 @@
         </div>
     </div>
     
+    <!-- Overlay de Editar Cartão -->
+    <div id="modal-fc-edit" class="fc-modal-overlay" style="display: none; z-index: 10001;">
+        <div class="fc-modal brutal-panel">
+            <div class="fc-modal-header">
+                <h3>EDITAR CARTÃO</h3>
+                <button id="btn-fc-close-edit" class="btn-close-modal">✕</button>
+            </div>
+            <div class="fc-modal-body">
+                <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">DECK:</label>
+                <select id="fc-edit-deck" class="fc-input"></select>
+                <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">FRENTE (PERGUNTA):</label>
+                <textarea id="fc-edit-front" class="fc-input" rows="3"></textarea>
+                <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">VERSO (RESPOSTA):</label>
+                <textarea id="fc-edit-back" class="fc-input" rows="4"></textarea>
+                <label class="brutal-label" style="color:var(--text-secondary); margin-top:0.5rem;">TAGS (Opcional):</label>
+                <input type="text" id="fc-edit-tags" class="fc-input" placeholder="ex: art5, penal, prazos">
+                <button id="btn-fc-save-edit" class="btn-hero" style="margin-top: 1.5rem; width: 100%;">SALVAR ALTERAÇÕES</button>
+            </div>
+        </div>
+    </div>
+    
     </div> <!-- FECHA TAB FLASHCARDS -->
     </div> <!-- END dashboard-container -->
 

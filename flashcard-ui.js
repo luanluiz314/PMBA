@@ -345,6 +345,15 @@ document.addEventListener('app-ready', async () => {
                     <div style="font-size:0.65rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-secondary);"><strong>V:</strong> ${card.back}</div>
                 `;
 
+                const actionsDiv = document.createElement('div');
+                actionsDiv.style.cssText = 'display:flex; flex-direction:column; gap:0.4rem;';
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-hero';
+                editBtn.style.cssText = 'padding:0.3rem 0.5rem; font-size:0.6rem; color:var(--text-primary); border-color:var(--text-secondary); margin-bottom:0; cursor:pointer;';
+                editBtn.textContent = 'EDITAR';
+                editBtn.onclick = () => openEditModal(card);
+
                 const delBtn = document.createElement('button');
                 delBtn.className = 'btn-hero';
                 delBtn.style.cssText = 'padding:0.3rem 0.5rem; font-size:0.6rem; color:var(--accent-red); border-color:var(--accent-red); margin-bottom:0; cursor:pointer;';
@@ -356,10 +365,81 @@ document.addEventListener('app-ready', async () => {
                     }
                 };
 
+                actionsDiv.appendChild(editBtn);
+                actionsDiv.appendChild(delBtn);
                 cardEl.appendChild(textDiv);
-                cardEl.appendChild(delBtn);
+                cardEl.appendChild(actionsDiv);
                 listManageCards.appendChild(cardEl);
             }
         }
+
+        // --- Edit Modal Logic ---
+        const modalEdit = document.getElementById('modal-fc-edit');
+        const btnCloseEdit = document.getElementById('btn-fc-close-edit');
+        const selectEditDeck = document.getElementById('fc-edit-deck');
+        const inputEditFront = document.getElementById('fc-edit-front');
+        const inputEditBack = document.getElementById('fc-edit-back');
+        const inputEditTags = document.getElementById('fc-edit-tags');
+        const btnSaveEdit = document.getElementById('btn-fc-save-edit');
+        
+        let cardBeingEdited = null;
+
+        btnCloseEdit.addEventListener('click', () => { modalEdit.style.display = 'none'; });
+
+        async function openEditModal(card) {
+            cardBeingEdited = card;
+            
+            selectEditDeck.innerHTML = '';
+            const decks = await window.srsDB.getDecks();
+            for (const deck of decks) {
+                const opt = document.createElement('option');
+                opt.value = deck.id;
+                opt.textContent = deck.name;
+                selectEditDeck.appendChild(opt);
+            }
+
+            selectEditDeck.value = card.deckId;
+            inputEditFront.value = card.front;
+            inputEditBack.value = card.back;
+            inputEditTags.value = (card.tags || []).join(', ');
+
+            modalEdit.style.display = 'flex';
+        }
+
+        btnSaveEdit.addEventListener('click', async () => {
+            if (!cardBeingEdited) return;
+            
+            const front = inputEditFront.value.trim();
+            const back = inputEditBack.value.trim();
+            const deckId = selectEditDeck.value;
+            const tags = inputEditTags.value.split(',').map(t => t.trim()).filter(t => t);
+
+            if (!front || !back || !deckId) {
+                alert('Preencha deck, frente e verso.');
+                return;
+            }
+
+            cardBeingEdited.front = front;
+            cardBeingEdited.back = back;
+            cardBeingEdited.deckId = deckId;
+            cardBeingEdited.tags = tags;
+            cardBeingEdited.updatedAt = Date.now();
+
+            await window.srsDB.putCard(cardBeingEdited);
+            
+            const oldText = btnSaveEdit.textContent;
+            btnSaveEdit.textContent = 'SALVO COM SUCESSO!';
+            btnSaveEdit.style.background = '#00ffaa';
+            btnSaveEdit.style.color = '#000';
+            setTimeout(() => {
+                btnSaveEdit.textContent = oldText;
+                btnSaveEdit.style.background = '';
+                btnSaveEdit.style.color = '';
+                modalEdit.style.display = 'none';
+                
+                // Refresh list
+                renderManageCardsList(selectManageDeck.value);
+            }, 1000);
+        });
     }
 });
