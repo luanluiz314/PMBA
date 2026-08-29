@@ -272,4 +272,94 @@ document.addEventListener('app-ready', async () => {
             }
         }
     });
+    // --- Delete in Review ---
+    const btnRevDelete = document.getElementById('btn-rev-delete');
+    if (btnRevDelete) {
+        btnRevDelete.addEventListener('click', async () => {
+            if (!currentCard) return;
+            if (confirm('Tem certeza que deseja apagar este cartão permanentemente?')) {
+                await window.srsDB.deleteCard(currentCard.id);
+                currentQueue.shift(); // Remove from current queue
+                loadNextCard();
+            }
+        });
+    }
+
+    // --- Manage Cards ---
+    const btnFcManage = document.getElementById('btn-fc-manage');
+    const modalManage = document.getElementById('modal-fc-manage');
+    const btnCloseManage = document.getElementById('btn-fc-close-manage');
+    const selectManageDeck = document.getElementById('fc-manage-deck');
+    const listManageCards = document.getElementById('fc-manage-list');
+
+    if (btnFcManage) {
+        btnFcManage.addEventListener('click', async () => {
+            modalManage.style.display = 'flex';
+            await loadManageDecks();
+        });
+
+        btnCloseManage.addEventListener('click', () => {
+            modalManage.style.display = 'none';
+            renderDecks(); // update stats if cards were deleted
+        });
+
+        selectManageDeck.addEventListener('change', async () => {
+            await renderManageCardsList(selectManageDeck.value);
+        });
+
+        async function loadManageDecks() {
+            selectManageDeck.innerHTML = '<option value="">-- Todos os Decks --</option>';
+            const decks = await window.srsDB.getDecks();
+            for (const deck of decks) {
+                const opt = document.createElement('option');
+                opt.value = deck.id;
+                opt.textContent = deck.name;
+                selectManageDeck.appendChild(opt);
+            }
+            await renderManageCardsList(''); // load all by default
+        }
+
+        async function renderManageCardsList(deckId) {
+            listManageCards.innerHTML = '<p class="brutal-label" style="color:var(--text-secondary); padding:1rem;">Carregando...</p>';
+            let cards = [];
+            if (deckId) {
+                cards = await window.srsDB.getCardsByDeck(deckId);
+            } else {
+                cards = await window.srsDB._getAll('cards');
+            }
+
+            if (cards.length === 0) {
+                listManageCards.innerHTML = '<p class="brutal-label" style="color:var(--text-secondary); padding:1rem;">Nenhum cartão encontrado.</p>';
+                return;
+            }
+
+            listManageCards.innerHTML = '';
+            for (const card of cards) {
+                const cardEl = document.createElement('div');
+                cardEl.style.cssText = 'border: 1px solid var(--border-color); padding: 0.75rem; display:flex; justify-content:space-between; gap:1rem; align-items:center; background: var(--bg-main);';
+                
+                const textDiv = document.createElement('div');
+                textDiv.style.cssText = 'flex:1; overflow:hidden; display:flex; flex-direction:column; gap:0.25rem;';
+                textDiv.innerHTML = `
+                    <div style="font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-primary);"><strong>F:</strong> ${card.front}</div>
+                    <div style="font-size:0.65rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-secondary);"><strong>V:</strong> ${card.back}</div>
+                `;
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'btn-hero';
+                delBtn.style.cssText = 'padding:0.3rem 0.5rem; font-size:0.6rem; color:var(--accent-red); border-color:var(--accent-red); margin-bottom:0; cursor:pointer;';
+                delBtn.textContent = 'APAGAR';
+                delBtn.onclick = async () => {
+                    if (confirm('Apagar este cartão permanentemente?')) {
+                        await window.srsDB.deleteCard(card.id);
+                        cardEl.remove();
+                    }
+                };
+
+                cardEl.appendChild(textDiv);
+                cardEl.appendChild(delBtn);
+                listManageCards.appendChild(cardEl);
+            }
+        }
+    }
 });
